@@ -8,6 +8,10 @@ import pages.HomePage;
 
 import java.time.Duration;
 
+
+import static pages.HomePage.FIRST_ORDER_BUTTON;
+import static pages.HomePage.SECOND_ORDER_BUTTON;
+
 public class HomePageSteps {
     private WebDriver driver;
     private HomePage homePage;
@@ -22,6 +26,12 @@ public class HomePageSteps {
 
     // Заголовок домашней страницы "Самокат на пару дней"
     private By homeHeader = By.className("Home_Header__iJKdX");
+
+    // Список вопросов раздела "Вопросы о важном"
+    private By listQuestions = By.className("accordion__item");
+
+    // Актуальный ответ раздела "Вопросы о важном"
+    private By ActualAnswer = By.xpath(".//div[@class = 'accordion__panel']");
 
     // Кнопка "Заказать" в верхней части домашней страницы
     private By orderButtonTopOfPage = By.xpath(".//div[@class = 'Header_Nav__AGCXC']/button[1]");
@@ -40,26 +50,39 @@ public class HomePageSteps {
 
     // Скрыть сообщение о куки
     public void hideCookieMessage(){
+
         driver.findElement(cookieHidingButton).click();
     }
 
-    // Нажать на актуальный вопрос
-    public void findListQuestion(int numberQuestion) {
-        driver.findElement(By.xpath(".//div[@class = 'accordion']/div["+ numberQuestion +"]")).click();
+    // Найти список вопросов
+    public void findListQuestions(int numberQuestion) {
+        driver.findElements(listQuestions).get(numberQuestion).click();
+
     }
 
-    // Получить тест актуального ответа
-    public String getActualAnswer(int numberQuestion) {
-        return driver.findElement(By.xpath(".//div[@class = 'accordion']/div["+ numberQuestion +"]/div[2]")).getText();
+    // Найти текст актуального ответа
+     public String getActualAnswer(int numberQuestion) {
+        return driver.findElements(ActualAnswer).get(numberQuestion).getText();
     }
 
     // Нажать на кнопку "Заказать" в верхней части домашней страницы
     public void clickOrderButtonTopOfPage() {
+
         driver.findElement(orderButtonTopOfPage).click();
     }
 
     // Нажать на кнопку "Заказать" в нижней части домашней страницы
     public void clickOrderButtonBottomOfPage() {
+
         driver.findElement(orderButtonBottomOfPage).click();
+    }
+
+    // Выбор кнопки "Заказать"
+    public void selectOrderButton(String valueOrderButton){
+        if (valueOrderButton.equals(FIRST_ORDER_BUTTON)){
+            clickOrderButtonTopOfPage();
+        } else if (valueOrderButton.equals(SECOND_ORDER_BUTTON)){
+            clickOrderButtonBottomOfPage();
+        }
     }
 }

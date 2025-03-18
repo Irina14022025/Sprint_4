@@ -1,13 +1,15 @@
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.Assert.assertEquals;
+import static pages.HomePage.FIRST_ORDER_BUTTON;
+import static pages.HomePage.SECOND_ORDER_BUTTON;
 
 @RunWith(Parameterized.class)
-public class OrderScooterSecondButtonTest extends BaseTest {
+public class OrderScooterButtonTest extends BaseTest {
+    private String valueOrderButton;
     private String valueName;
     private String valueLastname;
     private String valueAddress;
@@ -18,8 +20,9 @@ public class OrderScooterSecondButtonTest extends BaseTest {
     private String valueColour;
     private String valueComment;
 
-    public OrderScooterSecondButtonTest(String valueName, String valueLastname, String valueAddress, String valueStation, String valuePhone,
-                                        String valueOrderDate, int valueRentalPeriod, String valueColour, String valueComment) {
+    public OrderScooterButtonTest(String valueOrderButton, String valueName, String valueLastname, String valueAddress, String valueStation, String valuePhone,
+                                  String valueOrderDate, int valueRentalPeriod, String valueColour, String valueComment) {
+        this.valueOrderButton = valueOrderButton;
         this.valueName = valueName;
         this.valueLastname = valueLastname;
         this.valueAddress = valueAddress;
@@ -34,8 +37,8 @@ public class OrderScooterSecondButtonTest extends BaseTest {
     @Parameterized.Parameters
     public static Object[][] getOrderValues() {
         return new Object[][]{
-                {"Галина", "Васнецова", "ул. Школьная", "Лубянка", "88005553535", "24.03.2025", 1, "grey", "Вход со двора"},
-                {"Юра", "Борисов", "ул. Весенняя", "Румянцево", "+79009009090", "25.03.2025", 5, "black", "Осторожно, злая собака!"}
+                {FIRST_ORDER_BUTTON, "Галина", "Васнецова", "ул. Школьная", "Лубянка", "88005553535", "24.03.2025", 1, "grey", "Вход со двора"},
+                {SECOND_ORDER_BUTTON, "Юра", "Борисов", "ул. Весенняя", "Румянцево", "+79009009090", "25.03.2025", 5, "black", "Осторожно, злая собака!"}
         };
     }
 
@@ -43,7 +46,7 @@ public class OrderScooterSecondButtonTest extends BaseTest {
     public void orderButtonSecondTest() {
         homePageSteps.openPage();
         homePageSteps.hideCookieMessage();
-        homePageSteps.clickOrderButtonBottomOfPage();
+        homePageSteps.selectOrderButton(valueOrderButton);
         firstOrderFormPageSteps.waitForLoadFirstOrderForm();
         firstOrderFormPageSteps.inputAllFieldFirstOrderForm(valueName, valueLastname, valueAddress, valueStation, valuePhone);
         firstOrderFormPageSteps.clickFurtherButtonFirstOrderForm();
@@ -51,7 +54,6 @@ public class OrderScooterSecondButtonTest extends BaseTest {
         secondOrderFormPageSteps.inputAllFieldSecondOrderForm(valueOrderDate, valueRentalPeriod, valueColour, valueComment);
         secondOrderFormPageSteps.clickOrderButtonSecondOrderForm();
         secondOrderFormPageSteps.clickYesButtonForOrderconfirm();
-        WebElement element = driver.findElement(By.xpath(".//div[@class = 'Order_ModalHeader__3FDaJ' and text() = 'Заказ оформлен']"));
-        assertTrue("Окно об успешном создании заказа не найдено", element.isDisplayed());
+        assertEquals("Окно об успешном создании заказа не найдено", "Посмотреть статус", secondOrderFormPageSteps.findStatusButtonForOrderCreation());
     }
 }

@@ -39,8 +39,8 @@ public class SecondOrderFormPageSteps {
     // Кнопка "Да" во всплывающем окне "Хотите оформить заказ?"
     private By yesButtonForOrderconfirmation = By.xpath(".//div[@class = 'Order_Buttons__1xGrp']/button[text() = 'Да']");
 
-    // Заголовок "Заказ ооформлен" во всплывающем окне при успешном создании заказа
-    private By headerForSuccessfulOrderCreation = By.xpath(".//div[@class = 'Order_ModalHeader__3FDaJ' and text() = 'Заказ оформлен']");
+    // Кнопка "Посмотреть статус" во всплывающем окне при успешном создании заказа
+    private By statusButtonForOrderCreation = By.xpath(".//div[@class = 'Order_NextButton__1_rCA']/button[text() = 'Посмотреть статус']");
 
 
     // Подождали, пока загрузится форма заказа "Про аренду"
@@ -83,9 +83,9 @@ public class SecondOrderFormPageSteps {
         driver.findElement(yesButtonForOrderconfirmation).click();
     }
 
-    // Нашли заголовок "Заказ ооформлен" во всплывающем окне при успешном создании заказа
-    public void findHeaderForSuccessfulOrderCreation(){
-        driver.findElement(headerForSuccessfulOrderCreation);
+    // Получили текст кнопки "Посмотреть статус" во всплывающем окне при успешном создании заказа
+    public String findStatusButtonForOrderCreation(){
+        return driver.findElement(statusButtonForOrderCreation).getText();
     }
 
     // Заполнили все поля формы "Про аренду"
